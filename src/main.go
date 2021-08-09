@@ -23,10 +23,8 @@ func main() {
 	router := gin.Default()
 	router.GET("/", func(c *gin.Context) {
 		location := c.Query("location")
-		restaurantUsecase.FindNear(location)
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Hello World",
-		})
+		restaurants, _ := restaurantUsecase.FindNear(location)
+		c.JSON(http.StatusOK, restaurants)
 	})
 
 	router.Run()
