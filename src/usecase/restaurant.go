@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 )
 
 type RestaurantUsecase interface {
@@ -29,7 +30,7 @@ type Result struct {
 
 // 近隣の飲食店を返却
 func (ru *restaurantUsecase) FindNear(location string) {
-	key := ""
+	key := os.Getenv("API_KEY")
 	url := fmt.Sprintf("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&key=%s&radius=200&language=ja&type=restaurant", location, key)
 	resp, err := http.Get(url)
 
