@@ -49,7 +49,7 @@ func (ru *restaurantUsecase) FindNear(location string) ([]*model.Restaurant, err
 	}
 
 	// 結果をドメインオブジェクトの配列に詰め替え
-	var restaurants []*model.Restaurant
+	var restaurants = make([]*model.Restaurant, 0)
 	for _, v := range res.Results {
 		restaurants = append(restaurants, &model.Restaurant{
 			Name: v.Name,
