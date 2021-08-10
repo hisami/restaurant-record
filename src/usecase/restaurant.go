@@ -12,7 +12,7 @@ import (
 )
 
 type RestaurantUsecase interface {
-	FindNear(location string) (*[]model.Restaurant, error)
+	FindNear(location string) ([]*model.Restaurant, error)
 }
 
 type restaurantUsecase struct{}
@@ -23,7 +23,7 @@ func NewRestaurantUsecase() RestaurantUsecase {
 }
 
 // 近隣の飲食店を返却
-func (ru *restaurantUsecase) FindNear(location string) (*[]model.Restaurant, error) {
+func (ru *restaurantUsecase) FindNear(location string) ([]*model.Restaurant, error) {
 	// クライアントの生成
 	c, err := maps.NewClient(maps.WithAPIKey(os.Getenv("API_KEY")))
 	if err != nil {
@@ -49,12 +49,12 @@ func (ru *restaurantUsecase) FindNear(location string) (*[]model.Restaurant, err
 	}
 
 	// 結果をドメインオブジェクトの配列に詰め替え
-	var restaurants []model.Restaurant
+	var restaurants []*model.Restaurant
 	for _, v := range res.Results {
-		restaurants = append(restaurants, model.Restaurant{
+		restaurants = append(restaurants, &model.Restaurant{
 			Name: v.Name,
 		})
 	}
 
-	return &restaurants, nil
+	return restaurants, nil
 }
