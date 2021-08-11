@@ -12,15 +12,15 @@ import (
 	"googlemaps.github.io/maps"
 )
 
-type RestaurantRepository struct{}
+type GoogleRestaurantRepository struct{}
 
 // コンストラクタ
 func NewGoogleRestaurantRepository() repository.GoogleRestaurantRepository {
-	return &RestaurantRepository{}
+	return &GoogleRestaurantRepository{}
 }
 
 // Google APIを使って近隣の飲食店を返却
-func (rr *RestaurantRepository) FindNear(location string) ([]*model.GoogleRestaurant, error) {
+func (rr *GoogleRestaurantRepository) FindNear(location string) ([]*model.GoogleRestaurant, error) {
 	// クライアントの生成
 	c, err := maps.NewClient(maps.WithAPIKey(os.Getenv("API_KEY")))
 	if err != nil {
