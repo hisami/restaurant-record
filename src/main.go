@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"restaurant-record/infra"
 	"restaurant-record/usecase"
 
 	"github.com/gin-gonic/gin"
@@ -17,7 +18,8 @@ func main() {
 	}
 
 	// DI
-	restaurantUsecase := usecase.NewRestaurantUsecase()
+	restaurantRepository := infra.NewRestaurantRepository()
+	restaurantUsecase := usecase.NewRestaurantUsecase(restaurantRepository)
 
 	// ルーティング
 	router := gin.Default()
