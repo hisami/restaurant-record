@@ -15,12 +15,12 @@ import (
 type RestaurantRepository struct{}
 
 // コンストラクタ
-func NewRestaurantRepository() repository.RestaurantRepository {
+func NewGoogleRestaurantRepository() repository.GoogleRestaurantRepository {
 	return &RestaurantRepository{}
 }
 
 // Google APIを使って近隣の飲食店を返却
-func (rr *RestaurantRepository) FindNear(location string) ([]*model.Restaurant, error) {
+func (rr *RestaurantRepository) FindNear(location string) ([]*model.GoogleRestaurant, error) {
 	// クライアントの生成
 	c, err := maps.NewClient(maps.WithAPIKey(os.Getenv("API_KEY")))
 	if err != nil {
@@ -46,12 +46,12 @@ func (rr *RestaurantRepository) FindNear(location string) ([]*model.Restaurant, 
 	}
 
 	// 結果をドメインオブジェクトの配列に詰め替え
-	var restaurants = make([]*model.Restaurant, 0)
+	var googleRestaurants = make([]*model.GoogleRestaurant, 0)
 	for _, v := range res.Results {
-		restaurants = append(restaurants, &model.Restaurant{
+		googleRestaurants = append(googleRestaurants, &model.GoogleRestaurant{
 			Name: v.Name,
 		})
 	}
 
-	return restaurants, nil
+	return googleRestaurants, nil
 }

@@ -18,14 +18,14 @@ func main() {
 	}
 
 	// DI
-	restaurantRepository := infra.NewRestaurantRepository()
-	restaurantUsecase := usecase.NewRestaurantUsecase(restaurantRepository)
+	googleRestaurantRepository := infra.NewGoogleRestaurantRepository()
+	googleRestaurantUsecase := usecase.NewGoogleRestaurantUsecase(googleRestaurantRepository)
 
 	// ルーティング
 	router := gin.Default()
 	router.GET("/", func(c *gin.Context) {
 		location := c.Query("location")
-		restaurants, _ := restaurantUsecase.FindNear(location)
+		restaurants, _ := googleRestaurantUsecase.FindNear(location)
 		c.JSON(http.StatusOK, restaurants)
 	})
 

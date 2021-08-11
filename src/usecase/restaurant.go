@@ -5,27 +5,27 @@ import (
 	"restaurant-record/domain/repository"
 )
 
-type RestaurantUsecase interface {
-	FindNear(location string) ([]*model.Restaurant, error)
+type GoogleRestaurantUsecase interface {
+	FindNear(location string) ([]*model.GoogleRestaurant, error)
 }
 
-type restaurantUsecase struct {
-	restaurantRepo repository.RestaurantRepository
+type googleRestaurantUsecase struct {
+	googleRestaurantRepo repository.GoogleRestaurantRepository
 }
 
 // コンストラクタ
-func NewRestaurantUsecase(restaurantRepo repository.RestaurantRepository) RestaurantUsecase {
-	return &restaurantUsecase{
-		restaurantRepo: restaurantRepo,
+func NewGoogleRestaurantUsecase(googleRestaurantRepo repository.GoogleRestaurantRepository) GoogleRestaurantUsecase {
+	return &googleRestaurantUsecase{
+		googleRestaurantRepo: googleRestaurantRepo,
 	}
 }
 
 // 近隣の飲食店を返却
-func (ru *restaurantUsecase) FindNear(location string) ([]*model.Restaurant, error) {
-	restaurants, err := ru.restaurantRepo.FindNear(location)
+func (ru *googleRestaurantUsecase) FindNear(location string) ([]*model.GoogleRestaurant, error) {
+	googleRestaurants, err := ru.googleRestaurantRepo.FindNear(location)
 	if err != nil {
 		return nil, err
 	}
 
-	return restaurants, nil
+	return googleRestaurants, nil
 }
