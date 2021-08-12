@@ -14,15 +14,19 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type RestaurantRequest struct {
-	Name string `json:"name"`
+type GoogleRestaurantGetRequest struct {
+	Location string `form:"location" binding:"required"`
+}
+
+type RestaurantPostRequest struct {
+	Name string `json:"name" binding:"required"`
 }
 
 func main() {
 	// 環境変数の読み込み
 	err := godotenv.Load()
 	if err != nil {
-		log.Println("Error loading .env file")
+		log.Println("Cannot not find .env file")
 	}
 
 	// DB接続
@@ -42,16 +46,24 @@ func main() {
 	// ルーティング
 	router := gin.Default()
 	router.GET("/", func(c *gin.Context) {
-		location := c.Query("location")
-		restaurants, _ := googleRestaurantUsecase.FindNear(location)
+		var req GoogleRestaurantGetRequest
+		if err := c.ShouldBindQuery(&req); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		restaurants, _ := googleRestaurantUsecase.FindNear(req.Location)
 		c.JSON(http.StatusOK, restaurants)
 	})
 
 	router.POST("/", func(c *gin.Context) {
 		// リクエストボディの受け取り
-		var restaurantRequest RestaurantRequest
-		c.BindJSON(&restaurantRequest)
-		restaurant, _ := restaurantUsecase.Create(restaurantRequest.Name)
+		var req RestaurantPostRequest
+		if err := c.ShouldBindJSON(&req); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		// c.BindJSON(&request)
+		restaurant, _ := restaurantUsecase.Create(req.Name)
 		c.JSON(http.StatusOK, restaurant)
 	})
 
