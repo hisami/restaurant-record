@@ -22,7 +22,7 @@ func main() {
 	// 環境変数の読み込み
 	err := godotenv.Load()
 	if err != nil {
-		log.Println("Error loading .env filea")
+		log.Println("Error loading .env file")
 	}
 
 	// DB接続
