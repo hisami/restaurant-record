@@ -14,10 +14,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type GoogleRestaurantGetRequest struct {
-	Location string `form:"location" binding:"required"`
-}
-
 func main() {
 	// 環境変数の読み込み
 	err := godotenv.Load()
