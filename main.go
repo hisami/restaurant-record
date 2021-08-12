@@ -22,14 +22,14 @@ func main() {
 	// 環境変数の読み込み
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Println("Error loading .env filea")
 	}
 
 	// DB接続
 	connect := fmt.Sprintf("%s:%s@tcp(%s)/%s", os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"), os.Getenv("DB_NAME"))
 	db, err := gorm.Open("mysql", connect)
 	if err != nil {
-		panic("Cannot open database")
+		log.Println("Cannot open database")
 	}
 	defer db.Close()
 
