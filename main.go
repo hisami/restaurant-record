@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"restaurant-record/infra"
+	"restaurant-record/presentation/handler"
 	"restaurant-record/usecase"
 
 	"github.com/gin-gonic/gin"
@@ -16,10 +16,6 @@ import (
 
 type GoogleRestaurantGetRequest struct {
 	Location string `form:"location" binding:"required"`
-}
-
-type RestaurantPostRequest struct {
-	Name string `json:"name" binding:"required"`
 }
 
 func main() {
@@ -45,27 +41,9 @@ func main() {
 
 	// ルーティング
 	router := gin.Default()
-	router.GET("/", func(c *gin.Context) {
-		var req GoogleRestaurantGetRequest
-		// バリデーション
-		if err := c.ShouldBindQuery(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		restaurants, _ := googleRestaurantUsecase.FindNear(req.Location)
-		c.JSON(http.StatusOK, restaurants)
-	})
-
-	router.POST("/", func(c *gin.Context) {
-		var req RestaurantPostRequest
-		// バリデーション
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		restaurant, _ := restaurantUsecase.Create(req.Name)
-		c.JSON(http.StatusOK, restaurant)
-	})
+	api := router.Group("/api")
+	api.GET("/google-restaurants", handler.GooogleRestaurantCreate(googleRestaurantUsecase))
+	api.POST("/restaurants", handler.RestaurantCreate(restaurantUsecase))
 
 	router.Run()
 }
