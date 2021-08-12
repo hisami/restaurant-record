@@ -47,6 +47,7 @@ func main() {
 	router := gin.Default()
 	router.GET("/", func(c *gin.Context) {
 		var req GoogleRestaurantGetRequest
+		// バリデーション
 		if err := c.ShouldBindQuery(&req); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -56,13 +57,12 @@ func main() {
 	})
 
 	router.POST("/", func(c *gin.Context) {
-		// リクエストボディの受け取り
 		var req RestaurantPostRequest
+		// バリデーション
 		if err := c.ShouldBindJSON(&req); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		// c.BindJSON(&request)
 		restaurant, _ := restaurantUsecase.Create(req.Name)
 		c.JSON(http.StatusOK, restaurant)
 	})
