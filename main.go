@@ -8,6 +8,7 @@ import (
 	"restaurant-record/presentation/handler"
 	"restaurant-record/usecase"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -37,6 +38,7 @@ func main() {
 
 	// ルーティング
 	router := gin.Default()
+	router.Use(cors.New(cors.Config{AllowAllOrigins: true}))
 	api := router.Group("/api")
 	api.GET("/google-restaurants", handler.GooogleRestaurantCreate(googleRestaurantUsecase))
 	api.POST("/restaurants", handler.RestaurantCreate(restaurantUsecase))
