@@ -7,6 +7,7 @@ import (
 
 type RestaurantUsecase interface {
 	Create(name string) (*model.Restaurant, error)
+	FindAll() ([]*model.Restaurant, error)
 }
 
 type restaurantUsecase struct {
@@ -33,4 +34,14 @@ func (ru *restaurantUsecase) Create(name string) (*model.Restaurant, error) {
 	}
 
 	return createdRestaurant, nil
+}
+
+// FindAll
+func (ru *restaurantUsecase) FindAll() ([]*model.Restaurant, error) {
+	restaurants, err := ru.restaurantRepo.FindAll()
+	if err != nil {
+		return nil, err
+	}
+
+	return restaurants, nil
 }

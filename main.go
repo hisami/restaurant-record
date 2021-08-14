@@ -40,6 +40,7 @@ func main() {
 	api := router.Group("/api")
 	api.GET("/google-restaurants", handler.GooogleRestaurantCreate(googleRestaurantUsecase))
 	api.POST("/restaurants", handler.RestaurantCreate(restaurantUsecase))
+	api.GET("/restaurants", handler.RestaurantFindAll(restaurantUsecase))
 
 	router.Run()
 }

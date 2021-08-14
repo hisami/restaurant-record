@@ -24,3 +24,14 @@ func (rr *RestaurantRepository) Create(restaurant *model.Restaurant) (*model.Res
 
 	return restaurant, nil
 }
+
+// FindAll
+func (rr *RestaurantRepository) FindAll() ([]*model.Restaurant, error) {
+	var restaurants []*model.Restaurant
+
+	if err := rr.Conn.Find(&restaurants).Error; err != nil {
+		return nil, err
+	}
+
+	return restaurants, nil
+}

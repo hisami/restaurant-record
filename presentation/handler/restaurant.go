@@ -24,3 +24,11 @@ func RestaurantCreate(ru usecase.RestaurantUsecase) gin.HandlerFunc {
 	}
 	return gin.HandlerFunc(fn)
 }
+
+func RestaurantFindAll(ru usecase.RestaurantUsecase) gin.HandlerFunc {
+	fn := func(c *gin.Context) {
+		restaurants, _ := ru.FindAll()
+		c.JSON(http.StatusOK, restaurants)
+	}
+	return gin.HandlerFunc(fn)
+}
